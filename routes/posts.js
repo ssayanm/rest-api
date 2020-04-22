@@ -1,23 +1,38 @@
 const express = require("express");
 const router = express.Router();
-const Post = require("../models/Post");
+const Post = require("../models/post");
 
-router.get("/", (req, res) => res.send("We are on the posts"));
+//Getting all
+router.get("/", async (req, res) => {
+  try {
+    const posts = await Post.find();
+    res.json(posts);
+  } catch (err) {
+    res.json({ message: err.message });
+  }
+});
 
-router.post("/", (req, res) => {
+//Getting One
+router.get("/:id", async (req, res) => {
   const post = new Post({
     title: req.body.title,
     description: req.body.description,
   });
-
-  post
-    .save()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      res.json({ message: err });
-    });
+  try {
+    const newPost = await post.save();
+    res.json(newPost);
+  } catch (err) {
+    res.json({ message: err.message });
+  }
 });
+
+//creating One
+router.post("/", (req, res) => {});
+
+//Updating one
+router.patch("/:id", (req, res) => {});
+
+//Deleting one
+router.delete("/:id", (req, res) => {});
 
 module.exports = router;
