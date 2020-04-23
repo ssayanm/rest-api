@@ -1,5 +1,6 @@
 require("dotenv/config");
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose");
 //const MongoClient = require("mongodb").MongoClient;
 const app = express();
@@ -28,6 +29,8 @@ app.use(express.json());
 const postsRoute = require("./routes/posts");
 app.use("/posts", postsRoute);
 
+//set static folder
+app.use(express.static(path.join(__dirname, "public")));
 //How to start listening to server
 const PORT = process.env.PORT || 5000;
 
