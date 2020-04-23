@@ -4,38 +4,19 @@ const mongoose = require("mongoose");
 //const MongoClient = require("mongodb").MongoClient;
 const app = express();
 
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+
 //Connect to DB
-// mongoose.connect(process.env.DB_CONNECTION, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-// const db = mongoose.connection;
-// db.on("error", (error) => console.err(err));
-// db.once("open", () => console.log("Coonected to the database"));
+mongoose
+  .connect(process.env.DB_CONNECTION, options)
+  .then((instance) =>
+    console.log(`Connected to db: ${instance.connections[0].name}`)
+  )
+  .catch((error) => console.log("Connection failed!", error));
 
-const db = require("./db.js");
-const dbName = "rest-api";
-const collectionName = "posts";
-
-// << db init >>
-db.initialize(
-  dbName,
-  collectionName,
-  function (dbCollection) {
-    // successCallback
-    // get all items
-    dbCollection.find().toArray(function (err, result) {
-      if (err) throw err;
-      console.log(result);
-    });
-
-    // << db CRUD routes >>
-  },
-  function (err) {
-    // failureCallback
-    throw err;
-  }
-);
 //Apply Middleware
 //app.use(logger);
 
