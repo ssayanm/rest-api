@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/post");
 
-//Middleware
+//Middleware;
 const getPost = async (req, res, next) => {
   let post;
   try {
@@ -28,18 +28,18 @@ router.get("/", async (req, res) => {
 });
 
 //Getting One
-// router.get("/:id", getPost, (req, res) => {
-//   res.json(res.post);
-// });
-
-router.get("/:id", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    res.json(post);
-  } catch (err) {
-    res.json({ message: err.message });
-  }
+router.get("/:id", getPost, (req, res) => {
+  res.json(res.post);
 });
+
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const post = await Post.findById(req.params.id);
+//     res.json(post);
+//   } catch (err) {
+//     res.json({ message: err.message });
+//   }
+// });
 
 //creating One
 router.post("/", async (req, res) => {
@@ -56,49 +56,52 @@ router.post("/", async (req, res) => {
 });
 
 //Updating one
-// router.patch("/:id", getPost, async (req, res) => {
-//   if (req.body.title != null) {
-//     res.post.title = res.body.title;
-//   }
-//   if (req.body.description != null) {
-//     res.post.description = res.body.description;
-//   }
-//   try {
-//     const updatedPost = await res.post.save();
-//     res.json(updatedPost);
-//   } catch (err) {
-//     res.json({ message: err.message });
-//   }
-// });
-
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", getPost, async (req, res) => {
+  if (req.body.title != null) {
+    res.post.title = req.body.title;
+  }
+  if (req.body.description != null) {
+    res.post.description = req.body.description;
+  }
   try {
-    const updatedPost = await Post.updateOne(
-      { _id: req.params.id },
-      { $set: { title: req.body.title } }
-    );
+    const updatedPost = await res.post.save();
     res.json(updatedPost);
   } catch (err) {
     res.json({ message: err.message });
   }
 });
 
-//Deleting one
-// router.delete("/:id", getPost, async (req, res) => {
+// router.patch("/:id", async (req, res) => {
 //   try {
-//     await res.post.remove();
-//     res.json({ message: "Deleted Post" });
+//     const updatedPost = await Post.updateOne(
+//       { _id: req.params.id },
+
+//       {
+//         $set: { title: req.body.title, description: req.body.description },
+//       }
+//     );
+//     res.json(updatedPost);
 //   } catch (err) {
 //     res.json({ message: err.message });
 //   }
 // });
-router.delete("/:id", async (req, res) => {
+
+//Deleting one
+router.delete("/:id", getPost, async (req, res) => {
   try {
-    const removedPost = await Post.remove({ _id: req.params.id });
-    res.json(removedPost);
+    await res.post.remove();
+    res.json({ message: "Deleted Post" });
   } catch (err) {
     res.json({ message: err.message });
   }
 });
+// router.delete("/:id", async (req, res) => {
+//   try {
+//     const removedPost = await res.remove({ _id: req.params.id });
+//     res.json(removedPost);
+//   } catch (err) {
+//     res.json({ message: err.message });
+//   }
+// });
 
 module.exports = router;

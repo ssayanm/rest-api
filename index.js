@@ -31,7 +31,7 @@ app.use("/posts", postsRoute);
 
 //set static folder
 app.use(express.static(path.join(__dirname, "public")));
+
 //How to start listening to server
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
